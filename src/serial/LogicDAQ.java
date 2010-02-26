@@ -33,7 +33,7 @@ import java.util.*;
  *
  * @author brian
  */
-public class ScopeDAQ {
+public class LogicDAQ {
     public BufferedReader in;
     public PrintStream out;
 
@@ -84,25 +84,10 @@ public class ScopeDAQ {
 
         //Do handshake
 
-        //s for scope
-        out.print("s");
-
-        String s = in.readLine();
-
-        if (s.contains("scopeduino version"))
-        {
-            //Clear the buffer
-            System.out.println("FOUND: " + s);
-        }
-        else
-        {
-            System.err.println("Problem with Arduino Handshake");
-        }
-
         connected = true;
     }
 
-    public double[] readTrace()
+    public int[] readTrace()
     {
         if (!connected)
         {
@@ -140,13 +125,14 @@ public class ScopeDAQ {
             return null;
         }
 
-        double[] trace = new double[size];
+        int[] trace = new int[size];
 
         try
         {
             for (int i = 0; i < size; i++)
             {
-                trace[i] = (double) Integer.valueOf(in.readLine()) / 512.0 - 1.0;
+                String ln = in.readLine();
+                trace[i] = Integer.decode("0x" + ln);
             }
         }
         catch (Exception e)

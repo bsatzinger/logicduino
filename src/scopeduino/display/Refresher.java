@@ -18,7 +18,7 @@ package scopeduino.display;
 
 
 import javax.media.opengl.GLCanvas;
-import serial.ScopeDAQ;
+import serial.LogicDAQ;
 
 public class Refresher extends Thread  {
 

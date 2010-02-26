@@ -62,7 +62,7 @@ import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import serial.ScopeDAQ;
+import serial.LogicDAQ;
 
 
 

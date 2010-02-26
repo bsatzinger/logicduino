@@ -68,17 +68,13 @@ public class Trace implements Comparable{
 
     public float agedWidth()
     {
-        if (age <= 1)
-        {
-            return 2;
-        }
-
-        return w * age ;
+        return 2;
     }
 
     public float agedAlpha()
     {
-        return (0.25f) * (1 - (((float) age) / ((float) TTL)));
+        return 1.0f;
+        //return (0.25f) * (1 - (((float) age) / ((float) TTL)));
     }
 
     public void addAge()

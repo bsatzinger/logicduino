@@ -28,7 +28,7 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 import java.util.*;
-import serial.ScopeDAQ;
+import serial.LogicDAQ;
 
 public class GLRenderer implements GLEventListener {
 
@@ -43,7 +43,7 @@ public class GLRenderer implements GLEventListener {
     float trany = 0.0f;
     float tranz = 0.0f;
 
-    ScopeDAQ arduino;
+    LogicDAQ arduino;
     TraceReader reader;
 
     public void translate(int x, int y, int z)
@@ -111,7 +111,7 @@ public class GLRenderer implements GLEventListener {
 
 
         //connect with the arduino
-        arduino = new ScopeDAQ();
+        arduino = new LogicDAQ();
 
        
 
@@ -217,20 +217,12 @@ public class GLRenderer implements GLEventListener {
             //Sort the traces so they are drawn in the proper order
             Collections.sort(traces);
 
-            Vector<Trace> expired = new Vector<Trace>();
+
             for(Trace t : traces)
             {
                 drawGraph(gl, t);
-                t.addAge();
-
-                if (t.age > t.TTL)
-                {
-                    expired.add(t);
-                }
+               
             }
-
-            //Remove the expired elements
-            traces.removeAll(expired);
         }
 
         
@@ -241,7 +233,7 @@ public class GLRenderer implements GLEventListener {
         // Flush all drawing operations to the graphics card
 
         drawGrid(gl);
-        drawAxes(gl);
+        //drawAxes(gl);
 
         //gl.glRotatef(-90.0f,1.0f,0.0f,0.0f);
 

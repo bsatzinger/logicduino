@@ -19,7 +19,7 @@ This file is part of Scopeduino.
 package scopeduino.display;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import serial.ScopeDAQ;
+import serial.LogicDAQ;
 /**
  *
  * @author brian
@@ -27,11 +27,11 @@ import serial.ScopeDAQ;
 public class TraceReader extends Thread {
 
     Vector<Trace> traces;
-    ScopeDAQ arduino;
+    LogicDAQ arduino;
 
     ConcurrentLinkedQueue<byte[]> commandQueue;
 
-    public TraceReader(Vector<Trace> t, ScopeDAQ a)
+    public TraceReader(Vector<Trace> t, LogicDAQ a)
     {
         traces = t;
         arduino = a;
@@ -47,49 +47,65 @@ public class TraceReader extends Thread {
 
         while (arduino.connected)
         {
-            double[] data = arduino.readTrace();
+            int[] data = arduino.readTrace();
 
-            Trace t = new Trace(data,0.2f, 0.2f, 1.0f, 0.25f,1);
-
-            //Calculate the current trace rate
-            ntraces++;
-            if (ntraces > 30)
+            for (int i = 0; i < data.length; i++)
             {
-                double tracerate;
-                double dT;
-
-                dT = (System.currentTimeMillis() - time) / 1000.0;
-
-                tracerate = 30 / dT;
-
-                System.out.println("Trace Rate: " + tracerate + "traces/second. " + dT);
-
-                ntraces = 0;
-                time = System.currentTimeMillis();
-            }
-
-            synchronized(traces)
-            {
-                traces.add(t);
+                Integer b = new Integer(data[i]);
+                System.out.println(b.toString());
             }
 
 
-            //Check for other queued commands
-            while (!commandQueue.isEmpty())
-            {
-                byte[] command = commandQueue.poll();
+            //Create 8 traces, one for each bit
+            Vector<Trace> tBuffer = new Vector<Trace>(8);
 
-                if (command != null)
+            int mask = 1;
+
+            for (int b = 0; b < 7; b++)
+            {
+                int[] binaryString = new int[data.length];
+
+                for (int i = 0; i < data.length; i++)
                 {
-                    //send the command
-                    for (int i = 0; i < command.length; i++)
+                    if((mask & data[i]) == 0)
                     {
-                        arduino.out.write((byte) command[i]);
-                        System.out.println("Sending " + (char) command[i] + " to arduino");
+                        binaryString[i] = 0;
+                    }
+                    else
+                    {
+                        binaryString[i] = 1;
                     }
                 }
+
+                //Shift the mask to the left 1 bit
+                mask = mask << 1;
+
+                double[] dispData = new double[data.length];
+
+                //Calculate the display coordinates for this trace
+                for (int i = 0; i < data.length; i++)
+                {
+                    dispData[i] = b / 4.0 + binaryString[i] / 8.0 - 1;
+                }
+
+                //Create a trace with this data
+                Trace t = new Trace(dispData,0.2f, 0.2f, 1.0f, 0.25f,1);
+
+                //Add the trace to the buffer
+                tBuffer.add(t);
             }
 
+            //Add them to traces
+            synchronized(traces)
+            {
+                //Empty the buffer
+                traces.clear();
+
+                for (Trace tr : tBuffer)
+                {
+                    traces.add(tr);
+                }
+            }
 
             try
             {
