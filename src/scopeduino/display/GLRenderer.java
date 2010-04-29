@@ -231,7 +231,7 @@ public class GLRenderer implements GLEventListener {
         }
 
         
-
+        drawCursors(gl);
 
 
 
@@ -251,6 +251,35 @@ public class GLRenderer implements GLEventListener {
 
         gl.glFlush();
     }
+
+     public void drawCursors(GL gl)
+    {
+        if (ScopeSettings.enableCursors == false)
+        {
+            return;
+        }
+
+        //draw horizontal cursors
+        gl.glLineWidth(ScopeSettings.cursorWidth);
+        gl.glBegin(GL.GL_LINES);
+            float r = Math.abs(ScopeSettings.backr - ScopeSettings.hcursorR);
+            float g = Math.abs(ScopeSettings.backg - ScopeSettings.hcursorG);
+            float b = Math.abs(ScopeSettings.backb - ScopeSettings.hcursorB);
+
+            gl.glColor3f(r, g, b);
+
+            //Horizontal Cursor 1
+            gl.glVertex2f(ScopeSettings.hc1, 1.0f);
+            gl.glVertex2f(ScopeSettings.hc1, -1.0f);
+
+            //Horizontal Cursor 2
+            gl.glVertex2f(ScopeSettings.hc2, 1.0f);
+            gl.glVertex2f(ScopeSettings.hc2, -1.0f);
+
+        gl.glEnd();
+
+    }
+
 
     public void drawAxes(GL gl)
     {

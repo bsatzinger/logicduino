@@ -22,6 +22,7 @@
 
 package scopeduino.display;
 
+import java.awt.Font;
 import java.util.*;
 
 import com.sun.opengl.util.Animator;
@@ -163,6 +164,15 @@ public class GLScopeMac extends JFrame {
         jLabel3 = new JLabel();
         sldPan = new JSlider();
         CursorPanel = new JPanel();
+        chkCursors = new JCheckBox();
+        jLabel4 = new JLabel();
+        sldHC1 = new JSlider();
+        sldHC2 = new JSlider();
+        jLabel5 = new JLabel();
+        lblt1 = new JLabel();
+        lblt2 = new JLabel();
+        lbldt = new JLabel();
+        lblF = new JLabel();
 
         GroupLayout jPanel4Layout = new GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -319,16 +329,55 @@ public class GLScopeMac extends JFrame {
 
         jTabbedPane1.addTab("Display", DisplayPanel);
 
-        GroupLayout CursorPanelLayout = new GroupLayout(CursorPanel);
-        CursorPanel.setLayout(CursorPanelLayout);
-        CursorPanelLayout.setHorizontalGroup(
-            CursorPanelLayout.createParallelGroup(Alignment.LEADING)
-            .addGap(0, 282, Short.MAX_VALUE)
-        );
-        CursorPanelLayout.setVerticalGroup(
-            CursorPanelLayout.createParallelGroup(Alignment.LEADING)
-            .addGap(0, 474, Short.MAX_VALUE)
-        );
+        CursorPanel.setLayout(new GridLayout(12, 0));
+
+        chkCursors.setText("Enable Cursors");
+        chkCursors.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent evt) {
+                chkCursorsStateChanged(evt);
+            }
+        });
+        CursorPanel.add(chkCursors);
+
+        jLabel4.setText("Horizontal Cursors:");
+        CursorPanel.add(jLabel4);
+
+        sldHC1.setMaximum(256);
+        sldHC1.setValue(0);
+        sldHC1.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent evt) {
+                sldHC1StateChanged(evt);
+            }
+        });
+        CursorPanel.add(sldHC1);
+
+        sldHC2.setMaximum(256);
+        sldHC2.setValue(0);
+        sldHC2.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent evt) {
+                sldHC2StateChanged(evt);
+            }
+        });
+        CursorPanel.add(sldHC2);
+
+        jLabel5.setText("Measurements:");
+        CursorPanel.add(jLabel5);
+
+        lblt1.setFont(new Font("Dialog", 0, 12)); // NOI18N
+        lblt1.setText("t1 = ");
+        CursorPanel.add(lblt1);
+
+        lblt2.setFont(new Font("Dialog", 0, 12)); // NOI18N
+        lblt2.setText("t2 = ");
+        CursorPanel.add(lblt2);
+
+        lbldt.setFont(new Font("Dialog", 0, 12)); // NOI18N
+        lbldt.setText("dt = ");
+        CursorPanel.add(lbldt);
+
+        lblF.setFont(new Font("Dialog", 0, 12)); // NOI18N
+        lblF.setText("1 / dt = ");
+        CursorPanel.add(lblF);
 
         jTabbedPane1.addTab("Cursors", CursorPanel);
 
@@ -461,6 +510,59 @@ public class GLScopeMac extends JFrame {
         ScopeSettings.hPan = sldPan.getValue();
     }//GEN-LAST:event_sldPanStateChanged
 
+    private void chkCursorsStateChanged(ChangeEvent evt) {//GEN-FIRST:event_chkCursorsStateChanged
+        ScopeSettings.enableCursors = chkCursors.isSelected();
+        updateHLabels();
+    }//GEN-LAST:event_chkCursorsStateChanged
+
+    private void sldHC1StateChanged(ChangeEvent evt) {//GEN-FIRST:event_sldHC1StateChanged
+        float x = sldHC1.getValue() / 128.0f - 1.0f;
+        ScopeSettings.hc1 = x;
+        updateHLabels();
+    }//GEN-LAST:event_sldHC1StateChanged
+
+    private void sldHC2StateChanged(ChangeEvent evt) {//GEN-FIRST:event_sldHC2StateChanged
+        float x = sldHC2.getValue() / 128.0f - 1.0f;
+        ScopeSettings.hc2 = x;
+        updateHLabels();
+    }//GEN-LAST:event_sldHC2StateChanged
+
+    //update horizontal cursor (time) measurement labels
+    private void updateHLabels()
+    {
+        if (ScopeSettings.enableCursors == false)
+        {
+            lblt1.setText("t1 = ");
+            lblt2.setText("t2 = ");
+            lbldt.setText("dt = ");
+            lblF.setText("1 / dt = ");
+
+            return;
+        }
+
+
+        //entire viewport represents a certain amount of time
+        float windowTime = ScopeSettings.hZoom * ScopeSettings.samplePeriod;
+
+        //Calculate the (relative) time of the cursors within the viewport
+        float hc1 = sldHC1.getValue() / 256.0f;
+        float hc2 = sldHC2.getValue() / 256.0f;
+
+        //calculate measurements
+        float t1 = hc1 * windowTime;
+        float t2 = hc2 * windowTime;
+        float dt = Math.abs(t2 - t1);
+        float f = 1.0f / dt;
+
+
+        //set labels
+        lblt1.setText("t1 = " + (t1 * 1000.0f) + " ms");
+        lblt2.setText("t2 = " + (t2 * 1000.0f) + " ms");
+        lbldt.setText("dt = " + (dt * 1000.0f) + " ms");
+        lblF.setText("1 / dt = " + f + " Hz");
+
+    }
+
     /**
      * Called from within initComponents().
      * hint: to customize the generated code choose 'Customize Code' in the contextmenu
@@ -508,17 +610,26 @@ public class GLScopeMac extends JFrame {
     private JButton btnConnect;
     private JButton btnDetectSerial;
     private GLCanvas canvas;
+    private JCheckBox chkCursors;
     private JCheckBox chkPause;
     private JLabel jLabel1;
     private JLabel jLabel2;
     private JLabel jLabel3;
+    private JLabel jLabel4;
+    private JLabel jLabel5;
     private JPanel jPanel1;
     private JPanel jPanel4;
     private JSlider jSlider6;
     private JTabbedPane jTabbedPane1;
+    private JLabel lblF;
+    private JLabel lbldt;
+    private JLabel lblt1;
+    private JLabel lblt2;
     private JList lstSerialPorts;
     private JScrollPane scrlSerialPorts;
     private JSlider sldBackground;
+    private JSlider sldHC1;
+    private JSlider sldHC2;
     private JSlider sldPan;
     private JSlider sldZoom;
     // End of variables declaration//GEN-END:variables

@@ -32,4 +32,15 @@ public class ScopeSettings {
     static int hZoom = 256;
     static int hPan = 0;
 
+    //Cursor Settings
+    static float hc1 = -1.0f;
+    static float hc2 = -1.0f;
+    static boolean enableCursors = false;
+    static float cursorWidth = 1.5f;
+    //cursor color
+    static float hcursorR = 1.0f;
+    static float hcursorG = 1.0f;
+    static float hcursorB = 1.0f;
+    static float samplePeriod = .001f;
+
 }
