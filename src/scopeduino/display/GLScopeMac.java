@@ -162,10 +162,7 @@ public class GLScopeMac extends JFrame {
         sldZoom = new JSlider();
         jLabel3 = new JLabel();
         sldPan = new JSlider();
-        TriggerPanel = new JPanel();
-        jSlider2 = new JSlider();
-        Ch1Panel = new JPanel();
-        Ch2Panel = new JPanel();
+        CursorPanel = new JPanel();
 
         GroupLayout jPanel4Layout = new GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -267,7 +264,7 @@ public class GLScopeMac extends JFrame {
                 .addComponent(scrlSerialPorts, GroupLayout.PREFERRED_SIZE, 134, GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(ComponentPlacement.RELATED)
                 .addComponent(btnConnect)
-                .addContainerGap(251, Short.MAX_VALUE))
+                .addContainerGap(268, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Connection", ConnectionPanel);
@@ -295,71 +292,45 @@ public class GLScopeMac extends JFrame {
         });
         DisplayPanel.add(chkPause);
 
-        jLabel1.setText("Horizontal Zoom:");
+        jLabel1.setText("Horizontal Scale:");
         DisplayPanel.add(jLabel1);
 
         sldZoom.setMaximum(256);
+        sldZoom.setMinimum(1);
+        sldZoom.setValue(256);
+        sldZoom.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent evt) {
+                sldZoomStateChanged(evt);
+            }
+        });
         DisplayPanel.add(sldZoom);
 
         jLabel3.setText("Horizontal Pan:");
         DisplayPanel.add(jLabel3);
+
+        sldPan.setMaximum(256);
+        sldPan.setValue(0);
+        sldPan.addChangeListener(new ChangeListener() {
+            public void stateChanged(ChangeEvent evt) {
+                sldPanStateChanged(evt);
+            }
+        });
         DisplayPanel.add(sldPan);
 
         jTabbedPane1.addTab("Display", DisplayPanel);
 
-        jSlider2.setMaximum(255);
-        jSlider2.setMinimum(1);
-        jSlider2.setValue(127);
-        jSlider2.addMouseListener(new MouseAdapter() {
-            public void mouseReleased(MouseEvent evt) {
-                jSlider2MouseReleased(evt);
-            }
-        });
-
-        GroupLayout TriggerPanelLayout = new GroupLayout(TriggerPanel);
-        TriggerPanel.setLayout(TriggerPanelLayout);
-        TriggerPanelLayout.setHorizontalGroup(
-            TriggerPanelLayout.createParallelGroup(Alignment.LEADING)
-            .addGroup(TriggerPanelLayout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addComponent(jSlider2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(54, Short.MAX_VALUE))
-        );
-        TriggerPanelLayout.setVerticalGroup(
-            TriggerPanelLayout.createParallelGroup(Alignment.LEADING)
-            .addGroup(TriggerPanelLayout.createSequentialGroup()
-                .addGap(36, 36, 36)
-                .addComponent(jSlider2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(405, Short.MAX_VALUE))
-        );
-
-        jTabbedPane1.addTab("Trigger", TriggerPanel);
-
-        GroupLayout Ch1PanelLayout = new GroupLayout(Ch1Panel);
-        Ch1Panel.setLayout(Ch1PanelLayout);
-        Ch1PanelLayout.setHorizontalGroup(
-            Ch1PanelLayout.createParallelGroup(Alignment.LEADING)
+        GroupLayout CursorPanelLayout = new GroupLayout(CursorPanel);
+        CursorPanel.setLayout(CursorPanelLayout);
+        CursorPanelLayout.setHorizontalGroup(
+            CursorPanelLayout.createParallelGroup(Alignment.LEADING)
             .addGap(0, 282, Short.MAX_VALUE)
         );
-        Ch1PanelLayout.setVerticalGroup(
-            Ch1PanelLayout.createParallelGroup(Alignment.LEADING)
-            .addGap(0, 457, Short.MAX_VALUE)
+        CursorPanelLayout.setVerticalGroup(
+            CursorPanelLayout.createParallelGroup(Alignment.LEADING)
+            .addGap(0, 474, Short.MAX_VALUE)
         );
 
-        jTabbedPane1.addTab("Ch1", Ch1Panel);
-
-        GroupLayout Ch2PanelLayout = new GroupLayout(Ch2Panel);
-        Ch2Panel.setLayout(Ch2PanelLayout);
-        Ch2PanelLayout.setHorizontalGroup(
-            Ch2PanelLayout.createParallelGroup(Alignment.LEADING)
-            .addGap(0, 282, Short.MAX_VALUE)
-        );
-        Ch2PanelLayout.setVerticalGroup(
-            Ch2PanelLayout.createParallelGroup(Alignment.LEADING)
-            .addGap(0, 457, Short.MAX_VALUE)
-        );
-
-        jTabbedPane1.addTab("Ch2", Ch2Panel);
+        jTabbedPane1.addTab("Cursors", CursorPanel);
 
         GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -444,19 +415,6 @@ public class GLScopeMac extends JFrame {
         
     }//GEN-LAST:event_formWindowActivated
 
-    private void jSlider2MouseReleased(MouseEvent evt) {//GEN-FIRST:event_jSlider2MouseReleased
-        int val = jSlider2.getValue();
-
-        System.out.println("Sample Slider: " + val);
-
-        byte[] command = new byte[2];
-
-        command[0] = 'c';
-        command[1] = (byte) val;
-
-        rend.reader.commandQueue.add(command);
-}//GEN-LAST:event_jSlider2MouseReleased
-
     private void sldBackgroundStateChanged(ChangeEvent evt) {//GEN-FIRST:event_sldBackgroundStateChanged
         // TODO add your handling code here:
         float c = (float) sldBackground.getValue() / (float) sldBackground.getMaximum();
@@ -494,6 +452,14 @@ public class GLScopeMac extends JFrame {
     private void chkPauseStateChanged(ChangeEvent evt) {//GEN-FIRST:event_chkPauseStateChanged
         ScopeSettings.paused = chkPause.isSelected();
     }//GEN-LAST:event_chkPauseStateChanged
+
+    private void sldZoomStateChanged(ChangeEvent evt) {//GEN-FIRST:event_sldZoomStateChanged
+        ScopeSettings.hZoom = sldZoom.getValue();
+    }//GEN-LAST:event_sldZoomStateChanged
+
+    private void sldPanStateChanged(ChangeEvent evt) {//GEN-FIRST:event_sldPanStateChanged
+        ScopeSettings.hPan = sldPan.getValue();
+    }//GEN-LAST:event_sldPanStateChanged
 
     /**
      * Called from within initComponents().
@@ -536,11 +502,9 @@ public class GLScopeMac extends JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private JPanel Ch1Panel;
-    private JPanel Ch2Panel;
     private JPanel ConnectionPanel;
+    private JPanel CursorPanel;
     private JPanel DisplayPanel;
-    private JPanel TriggerPanel;
     private JButton btnConnect;
     private JButton btnDetectSerial;
     private GLCanvas canvas;
@@ -550,7 +514,6 @@ public class GLScopeMac extends JFrame {
     private JLabel jLabel3;
     private JPanel jPanel1;
     private JPanel jPanel4;
-    private JSlider jSlider2;
     private JSlider jSlider6;
     private JTabbedPane jTabbedPane1;
     private JList lstSerialPorts;

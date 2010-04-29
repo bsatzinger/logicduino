@@ -30,5 +30,6 @@ public class ScopeSettings {
     static boolean paused = false;
 
     static int hZoom = 256;
+    static int hPan = 0;
 
 }
