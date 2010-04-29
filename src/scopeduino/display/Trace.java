@@ -23,6 +23,9 @@ public class Trace implements Comparable{
     public float w;
     public int input;
 
+    public String label = "";
+    public float labely = 0.0f; //y coordinate of label
+
     public int xrotate;
 
     public Trace(double[] newdata, float newr, float newg, float newb, float neww, int newinput)

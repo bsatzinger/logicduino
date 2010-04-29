@@ -157,9 +157,11 @@ public class GLScopeMac extends JFrame {
         DisplayPanel = new JPanel();
         jLabel2 = new JLabel();
         sldBackground = new JSlider();
+        chkPause = new JCheckBox();
         jLabel1 = new JLabel();
-        jSlider1 = new JSlider();
-        jCheckBox1 = new JCheckBox();
+        sldZoom = new JSlider();
+        jLabel3 = new JLabel();
+        sldPan = new JSlider();
         TriggerPanel = new JPanel();
         jSlider2 = new JSlider();
         Ch1Panel = new JPanel();
@@ -251,9 +253,9 @@ public class GLScopeMac extends JFrame {
             .addGroup(ConnectionPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(ConnectionPanelLayout.createParallelGroup(Alignment.LEADING)
-                    .addComponent(scrlSerialPorts, GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE)
-                    .addComponent(btnDetectSerial, GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE)
-                    .addComponent(btnConnect, GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE))
+                    .addComponent(scrlSerialPorts, GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE)
+                    .addComponent(btnDetectSerial, GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE)
+                    .addComponent(btnConnect, GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE))
                 .addContainerGap())
         );
         ConnectionPanelLayout.setVerticalGroup(
@@ -265,68 +267,43 @@ public class GLScopeMac extends JFrame {
                 .addComponent(scrlSerialPorts, GroupLayout.PREFERRED_SIZE, 134, GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(ComponentPlacement.RELATED)
                 .addComponent(btnConnect)
-                .addContainerGap(253, Short.MAX_VALUE))
+                .addContainerGap(251, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Connection", ConnectionPanel);
 
         DisplayPanel.setBorder(BorderFactory.createEtchedBorder());
+        DisplayPanel.setLayout(new GridLayout(12, 1));
 
         jLabel2.setText(" Background:");
+        DisplayPanel.add(jLabel2);
 
         sldBackground.setPaintTicks(true);
-        sldBackground.setPaintTrack(false);
         sldBackground.setValue(0);
         sldBackground.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent evt) {
                 sldBackgroundStateChanged(evt);
             }
         });
+        DisplayPanel.add(sldBackground);
 
-        jLabel1.setText(" Time To Live:");
-
-        jSlider1.setMaximum(200);
-        jSlider1.setPaintTicks(true);
-        jSlider1.setPaintTrack(false);
-        jSlider1.setName("Time To Live"); // NOI18N
-        jSlider1.setOpaque(true);
-        jSlider1.addChangeListener(new ChangeListener() {
+        chkPause.setText("Pause");
+        chkPause.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent evt) {
-                jSlider1StateChanged(evt);
+                chkPauseStateChanged(evt);
             }
         });
-        jSlider1.addPropertyChangeListener(new PropertyChangeListener() {
-            public void propertyChange(PropertyChangeEvent evt) {
-                jSlider1PropertyChange(evt);
-            }
-        });
+        DisplayPanel.add(chkPause);
 
-        jCheckBox1.setText("Hard First Trace");
-        jCheckBox1.addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent evt) {
-                jCheckBox1StateChanged(evt);
-            }
-        });
+        jLabel1.setText("Horizontal Zoom:");
+        DisplayPanel.add(jLabel1);
 
-        GroupLayout DisplayPanelLayout = new GroupLayout(DisplayPanel);
-        DisplayPanel.setLayout(DisplayPanelLayout);
-        DisplayPanelLayout.setHorizontalGroup(
-            DisplayPanelLayout.createParallelGroup(Alignment.LEADING)
-            .addComponent(jLabel2, GroupLayout.PREFERRED_SIZE, 271, GroupLayout.PREFERRED_SIZE)
-            .addComponent(sldBackground, GroupLayout.PREFERRED_SIZE, 271, GroupLayout.PREFERRED_SIZE)
-            .addComponent(jLabel1, GroupLayout.PREFERRED_SIZE, 271, GroupLayout.PREFERRED_SIZE)
-            .addComponent(jSlider1, GroupLayout.PREFERRED_SIZE, 271, GroupLayout.PREFERRED_SIZE)
-            .addComponent(jCheckBox1, GroupLayout.PREFERRED_SIZE, 271, GroupLayout.PREFERRED_SIZE)
-        );
-        DisplayPanelLayout.setVerticalGroup(
-            DisplayPanelLayout.createParallelGroup(Alignment.LEADING)
-            .addGroup(DisplayPanelLayout.createSequentialGroup()
-                .addComponent(jLabel2, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE)
-                .addComponent(sldBackground, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE)
-                .addComponent(jLabel1, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE)
-                .addComponent(jSlider1, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE)
-                .addComponent(jCheckBox1, GroupLayout.PREFERRED_SIZE, 65, GroupLayout.PREFERRED_SIZE))
-        );
+        sldZoom.setMaximum(256);
+        DisplayPanel.add(sldZoom);
+
+        jLabel3.setText("Horizontal Pan:");
+        DisplayPanel.add(jLabel3);
+        DisplayPanel.add(sldPan);
 
         jTabbedPane1.addTab("Display", DisplayPanel);
 
@@ -346,14 +323,14 @@ public class GLScopeMac extends JFrame {
             .addGroup(TriggerPanelLayout.createSequentialGroup()
                 .addGap(28, 28, 28)
                 .addComponent(jSlider2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(43, Short.MAX_VALUE))
+                .addContainerGap(54, Short.MAX_VALUE))
         );
         TriggerPanelLayout.setVerticalGroup(
             TriggerPanelLayout.createParallelGroup(Alignment.LEADING)
             .addGroup(TriggerPanelLayout.createSequentialGroup()
                 .addGap(36, 36, 36)
                 .addComponent(jSlider2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(384, Short.MAX_VALUE))
+                .addContainerGap(405, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Trigger", TriggerPanel);
@@ -362,11 +339,11 @@ public class GLScopeMac extends JFrame {
         Ch1Panel.setLayout(Ch1PanelLayout);
         Ch1PanelLayout.setHorizontalGroup(
             Ch1PanelLayout.createParallelGroup(Alignment.LEADING)
-            .addGap(0, 275, Short.MAX_VALUE)
+            .addGap(0, 282, Short.MAX_VALUE)
         );
         Ch1PanelLayout.setVerticalGroup(
             Ch1PanelLayout.createParallelGroup(Alignment.LEADING)
-            .addGap(0, 461, Short.MAX_VALUE)
+            .addGap(0, 457, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Ch1", Ch1Panel);
@@ -375,11 +352,11 @@ public class GLScopeMac extends JFrame {
         Ch2Panel.setLayout(Ch2PanelLayout);
         Ch2PanelLayout.setHorizontalGroup(
             Ch2PanelLayout.createParallelGroup(Alignment.LEADING)
-            .addGap(0, 275, Short.MAX_VALUE)
+            .addGap(0, 282, Short.MAX_VALUE)
         );
         Ch2PanelLayout.setVerticalGroup(
             Ch2PanelLayout.createParallelGroup(Alignment.LEADING)
-            .addGap(0, 461, Short.MAX_VALUE)
+            .addGap(0, 457, Short.MAX_VALUE)
         );
 
         jTabbedPane1.addTab("Ch2", Ch2Panel);
@@ -428,33 +405,6 @@ public class GLScopeMac extends JFrame {
 
     }//GEN-LAST:event_formMouseClicked
 
-    private void jSlider1PropertyChange(PropertyChangeEvent evt) {//GEN-FIRST:event_jSlider1PropertyChange
-        // TODO add your handling code here:
-
-        
-
-        //
-    }//GEN-LAST:event_jSlider1PropertyChange
-
-    private void jSlider1StateChanged(ChangeEvent evt) {//GEN-FIRST:event_jSlider1StateChanged
-        // TODO add your handling code here:
-        System.out.println(jSlider1.getValue());
-        Trace.TTL = jSlider1.getValue();
-    }//GEN-LAST:event_jSlider1StateChanged
-
-    private void sldBackgroundStateChanged(ChangeEvent evt) {//GEN-FIRST:event_sldBackgroundStateChanged
-        // TODO add your handling code here:
-        float c = (float) sldBackground.getValue() / (float) sldBackground.getMaximum();
-
-        ScopeSettings.backr = c;
-        ScopeSettings.backg = c;
-        ScopeSettings.backb = c;
-    }//GEN-LAST:event_sldBackgroundStateChanged
-
-    private void jCheckBox1StateChanged(ChangeEvent evt) {//GEN-FIRST:event_jCheckBox1StateChanged
-        ScopeSettings.hardFirstTrace = jCheckBox1.isSelected();
-    }//GEN-LAST:event_jCheckBox1StateChanged
-
     private void canvasMouseDragged(MouseEvent evt) {//GEN-FIRST:event_canvasMouseDragged
         // TODO add your handling code here:
         if ((oldx == -1) || (oldy == -1))
@@ -486,36 +436,6 @@ public class GLScopeMac extends JFrame {
         rend.translate(0, 0, dz);
     }//GEN-LAST:event_canvasMouseWheelMoved
 
-    private void btnDetectSerialActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnDetectSerialActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnDetectSerialActionPerformed
-
-    private void btnDetectSerialMouseClicked(MouseEvent evt) {//GEN-FIRST:event_btnDetectSerialMouseClicked
-        Vector<String> ports = rend.arduino.getPorts();
-
-        lstSerialPorts.setListData(ports);
-
-    }//GEN-LAST:event_btnDetectSerialMouseClicked
-
-    private void btnConnectMouseClicked(MouseEvent evt) {//GEN-FIRST:event_btnConnectMouseClicked
-        String portname = (String)lstSerialPorts.getSelectedValue();
-        
-        System.out.println(portname);
-
-        try
-        {
-            rend.arduino.connect(portname);
-        }
-        catch (Exception e)
-        {
-            System.err.println("Couldn't Connect: " + e);
-        }
-
-        rend.startTraceReader();
-       
-
-    }//GEN-LAST:event_btnConnectMouseClicked
-
     private void formWindowOpened(WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
 
     }//GEN-LAST:event_formWindowOpened
@@ -535,7 +455,45 @@ public class GLScopeMac extends JFrame {
         command[1] = (byte) val;
 
         rend.reader.commandQueue.add(command);
-    }//GEN-LAST:event_jSlider2MouseReleased
+}//GEN-LAST:event_jSlider2MouseReleased
+
+    private void sldBackgroundStateChanged(ChangeEvent evt) {//GEN-FIRST:event_sldBackgroundStateChanged
+        // TODO add your handling code here:
+        float c = (float) sldBackground.getValue() / (float) sldBackground.getMaximum();
+
+        ScopeSettings.backr = c;
+        ScopeSettings.backg = c;
+        ScopeSettings.backb = c;
+}//GEN-LAST:event_sldBackgroundStateChanged
+
+    private void btnConnectMouseClicked(MouseEvent evt) {//GEN-FIRST:event_btnConnectMouseClicked
+        String portname = (String)lstSerialPorts.getSelectedValue();
+
+        System.out.println(portname);
+
+        try {
+            rend.arduino.connect(portname);
+        } catch (Exception e) {
+            System.err.println("Couldn't Connect: " + e);
+        }
+
+        rend.startTraceReader();
+
+    }//GEN-LAST:event_btnConnectMouseClicked
+
+    private void btnDetectSerialActionPerformed(ActionEvent evt) {//GEN-FIRST:event_btnDetectSerialActionPerformed
+        // TODO add your handling code here:
+}//GEN-LAST:event_btnDetectSerialActionPerformed
+
+    private void btnDetectSerialMouseClicked(MouseEvent evt) {//GEN-FIRST:event_btnDetectSerialMouseClicked
+        Vector<String> ports = rend.arduino.getPorts();
+
+        lstSerialPorts.setListData(ports);
+    }//GEN-LAST:event_btnDetectSerialMouseClicked
+
+    private void chkPauseStateChanged(ChangeEvent evt) {//GEN-FIRST:event_chkPauseStateChanged
+        ScopeSettings.paused = chkPause.isSelected();
+    }//GEN-LAST:event_chkPauseStateChanged
 
     /**
      * Called from within initComponents().
@@ -586,18 +544,20 @@ public class GLScopeMac extends JFrame {
     private JButton btnConnect;
     private JButton btnDetectSerial;
     private GLCanvas canvas;
-    private JCheckBox jCheckBox1;
+    private JCheckBox chkPause;
     private JLabel jLabel1;
     private JLabel jLabel2;
+    private JLabel jLabel3;
     private JPanel jPanel1;
     private JPanel jPanel4;
-    private JSlider jSlider1;
     private JSlider jSlider2;
     private JSlider jSlider6;
     private JTabbedPane jTabbedPane1;
     private JList lstSerialPorts;
     private JScrollPane scrlSerialPorts;
     private JSlider sldBackground;
+    private JSlider sldPan;
+    private JSlider sldZoom;
     // End of variables declaration//GEN-END:variables
 
 }

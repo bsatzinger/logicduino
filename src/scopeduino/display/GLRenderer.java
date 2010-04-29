@@ -29,11 +29,12 @@ import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 import java.util.*;
 import serial.LogicDAQ;
+import com.sun.opengl.util.GLUT;
 
 public class GLRenderer implements GLEventListener {
 
     Vector<Trace> traces = new Vector<Trace>();
-    
+
     float xangle;
     float yangle;
     float zangle;
@@ -45,6 +46,8 @@ public class GLRenderer implements GLEventListener {
 
     LogicDAQ arduino;
     TraceReader reader;
+
+    private GLUT glut = new GLUT();
 
     public void translate(int x, int y, int z)
     {
@@ -117,6 +120,8 @@ public class GLRenderer implements GLEventListener {
 
 
         GL gl = drawable.getGL();
+
+
         System.err.println("INIT GL IS: " + gl.getClass().getName());
 
         // Enable VSync
@@ -167,7 +172,7 @@ public class GLRenderer implements GLEventListener {
         gl.glLoadIdentity();
 
         // Move the "drawing cursor" around
-        gl.glTranslatef(0.0f, 0.0f, ScopeSettings.z);
+        gl.glTranslatef(0.05f, 0.0f, ScopeSettings.z);
         
         gl.glRotatef(xangle,1.0f,0.0f,0.0f);
         gl.glRotatef(yangle,0.0f,1.0f,0.0f);
@@ -232,13 +237,17 @@ public class GLRenderer implements GLEventListener {
 
         // Flush all drawing operations to the graphics card
 
-        drawGrid(gl);
+        //drawGrid(gl);
         //drawAxes(gl);
 
         //gl.glRotatef(-90.0f,1.0f,0.0f,0.0f);
 
         //drawGrid(gl);
         //drawAxes(gl);
+
+        //gl.glRasterPos3f(0.7f,1.0f,0.0f);
+        //gl.glColor3f(1.0f,1.0f,1.0f);
+        //glut.glutBitmapString(GLUT.BITMAP_HELVETICA_18, "PAUSED");
 
         gl.glFlush();
     }
@@ -280,6 +289,19 @@ public class GLRenderer implements GLEventListener {
     public void drawGraph(GL gl, Trace t)
     {
         float[] rgb = t.agedColor();
+
+        //Draw Label
+        gl.glPushMatrix();
+        gl.glBegin(gl.GL_LINES);
+                gl.glColor4f(t.r, t.g, t.b, 1.0f);
+        gl.glEnd();
+        
+            gl.glRasterPos3f(-1.12f,t.labely,0.0f);
+            gl.glColor4f(t.r, t.g, t.b, 1.0f);
+            glut.glutBitmapString(GLUT.BITMAP_HELVETICA_10, t.label);
+
+        gl.glPopMatrix();
+
 
         gl.glPushMatrix();
 

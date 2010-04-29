@@ -27,4 +27,8 @@ public class ScopeSettings {
 
     static float amp;
 
+    static boolean paused = false;
+
+    static int hZoom = 256;
+
 }

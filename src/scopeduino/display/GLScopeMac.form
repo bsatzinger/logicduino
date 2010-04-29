@@ -132,9 +132,9 @@
                   <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="scrlSerialPorts" alignment="0" pref="251" max="32767" attributes="0"/>
-                          <Component id="btnDetectSerial" alignment="0" pref="251" max="32767" attributes="0"/>
-                          <Component id="btnConnect" alignment="0" pref="251" max="32767" attributes="0"/>
+                          <Component id="scrlSerialPorts" alignment="0" pref="258" max="32767" attributes="0"/>
+                          <Component id="btnDetectSerial" alignment="0" pref="258" max="32767" attributes="0"/>
+                          <Component id="btnConnect" alignment="0" pref="258" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -149,7 +149,7 @@
                       <Component id="scrlSerialPorts" min="-2" pref="134" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="btnConnect" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="253" max="32767" attributes="0"/>
+                      <EmptySpace pref="251" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -212,27 +212,9 @@
             </Constraint>
           </Constraints>
 
-          <Layout>
-            <DimensionLayout dim="0">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jLabel2" min="-2" pref="271" max="-2" attributes="0"/>
-                  <Component id="sldBackground" min="-2" pref="271" max="-2" attributes="0"/>
-                  <Component id="jLabel1" min="-2" pref="271" max="-2" attributes="0"/>
-                  <Component id="jSlider1" min="-2" pref="271" max="-2" attributes="0"/>
-                  <Component id="jCheckBox1" min="-2" pref="271" max="-2" attributes="0"/>
-              </Group>
-            </DimensionLayout>
-            <DimensionLayout dim="1">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" attributes="0">
-                      <Component id="jLabel2" min="-2" pref="65" max="-2" attributes="0"/>
-                      <Component id="sldBackground" min="-2" pref="65" max="-2" attributes="0"/>
-                      <Component id="jLabel1" min="-2" pref="65" max="-2" attributes="0"/>
-                      <Component id="jSlider1" min="-2" pref="65" max="-2" attributes="0"/>
-                      <Component id="jCheckBox1" min="-2" pref="65" max="-2" attributes="0"/>
-                  </Group>
-              </Group>
-            </DimensionLayout>
+          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignGridLayout">
+            <Property name="columns" type="int" value="1"/>
+            <Property name="rows" type="int" value="12"/>
           </Layout>
           <SubComponents>
             <Component class="javax.swing.JLabel" name="jLabel2">
@@ -243,38 +225,36 @@
             <Component class="javax.swing.JSlider" name="sldBackground">
               <Properties>
                 <Property name="paintTicks" type="boolean" value="true"/>
-                <Property name="paintTrack" type="boolean" value="false"/>
                 <Property name="value" type="int" value="0"/>
               </Properties>
               <Events>
                 <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="sldBackgroundStateChanged"/>
               </Events>
             </Component>
+            <Component class="javax.swing.JCheckBox" name="chkPause">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Pause"/>
+              </Properties>
+              <Events>
+                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="chkPauseStateChanged"/>
+              </Events>
+            </Component>
             <Component class="javax.swing.JLabel" name="jLabel1">
               <Properties>
-                <Property name="text" type="java.lang.String" value=" Time To Live:"/>
+                <Property name="text" type="java.lang.String" value="Horizontal Zoom:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JSlider" name="jSlider1">
+            <Component class="javax.swing.JSlider" name="sldZoom">
               <Properties>
-                <Property name="maximum" type="int" value="200"/>
-                <Property name="paintTicks" type="boolean" value="true"/>
-                <Property name="paintTrack" type="boolean" value="false"/>
-                <Property name="name" type="java.lang.String" value="Time To Live" noResource="true"/>
-                <Property name="opaque" type="boolean" value="true"/>
+                <Property name="maximum" type="int" value="256"/>
               </Properties>
-              <Events>
-                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="jSlider1StateChanged"/>
-                <EventHandler event="propertyChange" listener="java.beans.PropertyChangeListener" parameters="java.beans.PropertyChangeEvent" handler="jSlider1PropertyChange"/>
-              </Events>
             </Component>
-            <Component class="javax.swing.JCheckBox" name="jCheckBox1">
+            <Component class="javax.swing.JLabel" name="jLabel3">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Hard First Trace"/>
+                <Property name="text" type="java.lang.String" value="Horizontal Pan:"/>
               </Properties>
-              <Events>
-                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="jCheckBox1StateChanged"/>
-              </Events>
+            </Component>
+            <Component class="javax.swing.JSlider" name="sldPan">
             </Component>
           </SubComponents>
         </Container>
@@ -293,7 +273,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
                       <Component id="jSlider2" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="43" max="32767" attributes="0"/>
+                      <EmptySpace pref="54" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -302,7 +282,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
                       <Component id="jSlider2" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="384" max="32767" attributes="0"/>
+                      <EmptySpace pref="405" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -332,12 +312,12 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="275" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="282" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="461" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="457" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
           </Layout>
@@ -354,12 +334,12 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="275" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="282" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <EmptySpace min="0" pref="461" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="457" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
           </Layout>

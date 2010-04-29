@@ -87,7 +87,7 @@ public class LogicDAQ {
         connected = true;
     }
 
-    public int[] readTrace()
+    public Vector<int[]> readTrace()
     {
         if (!connected)
         {
@@ -125,14 +125,22 @@ public class LogicDAQ {
             return null;
         }
 
-        int[] trace = new int[size];
+        int[] dtrace = new int[size];
+        int[] btrace = new int[size];
+        int[] ctrace = new int[size];
 
         try
         {
             for (int i = 0; i < size; i++)
             {
                 String ln = in.readLine();
-                trace[i] = Integer.decode("0x" + ln);
+                dtrace[i] = Integer.decode("0x" + ln);
+
+                ln = in.readLine();
+                btrace[i] = Integer.decode("0x" + ln);
+
+                ln = in.readLine();
+                ctrace[i] = Integer.decode("0x" + ln);
             }
         }
         catch (Exception e)
@@ -141,7 +149,12 @@ public class LogicDAQ {
             connected = false;
         }
 
+        Vector<int[]> data = new Vector<int[]>(3);
 
-        return trace;
+        data.add(dtrace);
+        data.add(btrace);
+        data.add(ctrace);
+
+        return data;
     }
 }
